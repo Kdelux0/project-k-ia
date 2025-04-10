@@ -24,7 +24,7 @@ Project K-IA é uma ferramenta definitiva para Android, criada no Termux, focada
 
 ```bash
 pkg install git -y
-git clone https://github.com/seuusuario/project-k-ia.git
+git clone https://github.com/Kdelux0/project-k-ia.git
 cd project-k-ia
 chmod +x project-k-ia.sh
 ./project-k-ia.sh
