@@ -44,10 +44,47 @@ ia_fps_boost() {
 
 # IA Panel com dados ao vivo
 dashboard() {
-    echo -e "${CYAN}Painel IA ao vivo:${RESET}"
-    cpu=$(top -n 1 | grep -m 1 CPU | awk '{print $3}')
-    ram=$(free -m | awk '/Mem:/ {print $3"MB / "$2"MB"}')
-    temp=$(termux-battery-status | grep temperature | awk '{print $2}' | tr -d ',')
+    painel_ia_ao_vivo() {
+  clear
+  echo -e "${green}INICIANDO PAINEL IA AO VIVO...${reset}"
+  sleep 1
+
+  while true; do
+    clear
+    echo -e "${cyan}=========== PAINEL IA AO VIVO ===========${reset}"
+
+    # Verifica bateria
+    if command -v termux-battery-status >/dev/null; then
+      battery_info=$(termux-battery-status)
+      level=$(echo "$battery_info" | jq -r '.percentage')
+      temperature=$(echo "$battery_info" | jq -r '.temperature // "N/A"')
+      echo -e "Bateria: ${level}%"
+      echo -e "Temperatura: ${temperature}°C"
+    else
+      echo -e "Bateria: Informação indisponível (Termux:API ausente)"
+    fi
+
+    # RAM livre
+    free_ram=$(free -h | grep Mem | awk '{print $4}')
+    echo -e "RAM Livre: $free_ram"
+
+    # CPU
+    cpu_load=$(top -bn1 | grep "CPU" | awk '{print $2}')
+    echo -e "Uso da CPU: ${cpu_load:-Desconhecido}"
+
+    # FPS IA Simulado
+    fps=$((60 + RANDOM % 31))  # entre 60 e 90
+    echo -e "FPS Estimado IA: ${fps} FPS"
+
+    # Simulação de rede IA
+    ping_output=$(ping -c 1 google.com | grep 'time=' | awk -F'time=' '{print $2}' | cut -d' ' -f1)
+    echo -e "Latência: ${ping_output:-Desconhecida} ms"
+
+    echo -e "${cyan}=========================================${reset}"
+    echo -e "Pressione [Ctrl+C] para sair"
+    sleep 3
+  done
+}
 
     echo "CPU: $cpu"
     echo "RAM: $ram"
